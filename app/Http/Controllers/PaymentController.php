@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Storage;
+use Exception;
 
 class PaymentController extends Controller
 {
@@ -15,6 +16,8 @@ class PaymentController extends Controller
         session_start();
 
         $request_token = $this->_bkash_Get_Token();
+
+
 
         $idtoken = $request_token['id_token'];
 
@@ -31,7 +34,6 @@ class PaymentController extends Controller
 
         $newJsonString = json_encode($array);
         File::put(storage_path() . '/app/public/config.json', $newJsonString);
-
         echo $idtoken;
     }
 
@@ -43,14 +45,13 @@ class PaymentController extends Controller
         $array = $this->_get_config_file();
 
 
-
         $post_token = array(
             'app_key' => $array["app_key"],
             'app_secret' => $array["app_secret"]
         );
 
+
         $url = curl_init($array["tokenURL"]);
-        $proxy = $array["proxy"];
         $posttoken = json_encode($post_token);
         $header = array(
             'Content-Type:application/json',
@@ -58,24 +59,53 @@ class PaymentController extends Controller
             'username:' . $array["username"]
         );
 
+
         curl_setopt($url, CURLOPT_HTTPHEADER, $header);
         curl_setopt($url, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($url, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($url, CURLOPT_POSTFIELDS, $posttoken);
         curl_setopt($url, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($url, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($url, CURLOPT_SSL_VERIFYPEER, 0);
         //curl_setopt($url, CURLOPT_PROXY, $proxy);
-        $resultdata = curl_exec($url);
+        try{
+            $resultdata = curl_exec($url);
+        }catch(Exception $e)
+        {
+            throw new Exception("Error Processing Request ".$e->getMessage());
+            
+        }
         curl_close($url);
-        return json_decode($resultdata, true);
+        //return json_decode($resultdata, true);
+        $x = json_decode($resultdata, true);
+        return $x;
+
     }
 
     protected function _get_config_file()
     {
 
-         $path = storage_path() . "/app/public/config.json";
-        return json_decode(file_get_contents($path), true);
+        $contents = Storage::disk('public')->get('config.json');
+        return   json_decode($contents, true);
+       
+        /*return json_decode(file_get_contents($path), true);*/
 
-
+       /* $path =  (
+            "createURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/create",
+        "executeURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/execute/",
+        "tokenURL" : "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant",
+        "script" : "https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js",
+        "app_key": "5nej5keguopj928ekcj3dne8p",
+        "proxy" : "",
+        "app_secret": "1honf6u1c56mqcivtc9ffl960slp4v2756jle5925nbooa46ch62",
+        "username" : "testdemo",
+        "password" : "test%#de23@msdao",
+        "token" : "",
+        ),
+        
+       
+        
+        dd($path);*/
 
        /* $path= '{
                 "createURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/create",
@@ -124,6 +154,8 @@ class PaymentController extends Controller
         curl_setopt($url, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($url, CURLOPT_POSTFIELDS, $createpaybodyx);
         curl_setopt($url, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($url, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($url, CURLOPT_SSL_VERIFYPEER, 0);
         //curl_setopt($url, CURLOPT_PROXY, $proxy);
 
         $resultdata = curl_exec($url);
@@ -155,6 +187,8 @@ class PaymentController extends Controller
         curl_setopt($url, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($url, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($url, CURLOPT_FOLLOWLOCATION, 1);
+         curl_setopt($url, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($url, CURLOPT_SSL_VERIFYPEER, 0);
         // curl_setopt($url, CURLOPT_PROXY, $proxy);
 
         $resultdatax = curl_exec($url);

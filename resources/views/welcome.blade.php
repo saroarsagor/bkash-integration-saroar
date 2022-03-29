@@ -7,12 +7,7 @@
     <meta name="viewport" content="width=device-width" ,="" initial-scale="1.0/">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrom=1">
    <!--  <script src="js/jquery-1.8.3.min.js"></script> -->
-   <script src="https://code.jquery.com/jquery-1.8.3.min.js"
-        integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8=" crossorigin="anonymous"></script>
-
-    <script id = "myScript" src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
-
-
+   
     {{--CSRF Token--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
  
@@ -27,6 +22,10 @@
 </div>
 
 
+<script src="https://raw.githubusercontent.com/bKash-developer/pgw-merchant-backend-php/master/php/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script id = "myScript" src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+
 <script>
     var accessToken = '';
     $(document).ready(function () {
@@ -40,9 +39,11 @@
             type: 'POST',
             contentType: 'application/json',
             success: function (data) {
-                console.log('got data from token  ..');
-                console.log(JSON.stringify(data));
+                //console.log('got data from token  ..');
+                //console.log(JSON.stringify(data));
+
                 accessToken = JSON.stringify(data);
+
             },
             error: function () {
                 console.log('error');
@@ -53,8 +54,8 @@
             executeCheckoutURL: "{!! route('executepayment') !!}"
         };
         var paymentRequest;
-        paymentRequest = {amount: 20, intent: 'sale', invoice: ww123};
-        console.log(JSON.stringify(paymentRequest));
+        paymentRequest = {amount: 20, intent: 'sale', invoice: 'ww123'};
+        
         bKash.init({
             paymentMode: 'checkout',
             paymentRequest: paymentRequest,
@@ -66,9 +67,11 @@
                     type: 'GET',
                     contentType: 'application/json',
                     success: function (data) {
+
                         console.log('got data from create  ..');
-                        console.log('data ::=>');
+                        //console.log('data ::=>');
                         console.log(JSON.stringify(data));
+                        //return ;
                         var obj = JSON.parse(data);
                         if (data && obj.paymentID != null) {
                             paymentID = obj.paymentID;
@@ -116,8 +119,11 @@
         bKash.reconfigure(val);
     }
     function clickPayButton() {
+        
         $("#bKash_button").trigger('click');
     }
+
+    clickPayButton();
 </script>
     
 </body>
