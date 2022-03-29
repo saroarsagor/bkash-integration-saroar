@@ -90,38 +90,6 @@ class PaymentController extends Controller
        
         /*return json_decode(file_get_contents($path), true);*/
 
-       /* $path =  (
-            "createURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/create",
-        "executeURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/execute/",
-        "tokenURL" : "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant",
-        "script" : "https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js",
-        "app_key": "5nej5keguopj928ekcj3dne8p",
-        "proxy" : "",
-        "app_secret": "1honf6u1c56mqcivtc9ffl960slp4v2756jle5925nbooa46ch62",
-        "username" : "testdemo",
-        "password" : "test%#de23@msdao",
-        "token" : "",
-        ),
-        
-       
-        
-        dd($path);*/
-
-       /* $path= '{
-                "createURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/create",
-                "executeURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/execute/",
-                "tokenURL" : "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant",
-                "script" : "https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js",
-                "app_key": "",
-                "proxy" : "",
-                "app_secret": "",
-                "username" : "",
-                "password" : "",
-                "token" : ""
-        }
-        ';
-        $x =  json_decode($path);
-        return (array)$x;*/
 
     }
 
