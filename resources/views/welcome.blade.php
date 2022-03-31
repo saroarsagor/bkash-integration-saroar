@@ -18,7 +18,7 @@
 
 
 <div class="">
-   <button class="btn btn-primary" id="bKash_button">Pay with bKash</button>
+   <button class="btn btn-primary" id="bKash_button">Pay with bKash Click</button>
 </div>
 
 
